@@ -1,0 +1,721 @@
+{
+  "dataset_type": "cuhk",
+  "has_gt": false,
+  "average_metrics": {
+    "PSNR": null,
+    "SSIM": null,
+    "MAE": null,
+    "LPIPS": null,
+    "Num_Images": 100
+  },
+  "model_stats": {
+    "prior_params": 6.737267,
+    "restoration_params": 13.160259,
+    "total_params": 19.897526,
+    "total_flops": 2943017430720.0
+  },
+  "per_image_results": [
+    {
+      "filename": "000001.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000002.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000003.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000004.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000005.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000006.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000007.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000008.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000009.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000010.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000011.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000012.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000013.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000014.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000015.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000016.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000017.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000018.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000019.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000020.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000021.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000022.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000023.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000024.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000025.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000026.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000027.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000028.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000029.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000030.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000031.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000032.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000033.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000034.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000035.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000036.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000037.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000038.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000039.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000040.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000041.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000042.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000043.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000044.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000045.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000046.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000047.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000048.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000049.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000050.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000051.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000052.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000053.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000054.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000055.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000056.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000057.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000058.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000059.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000060.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000061.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000062.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000063.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000064.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000065.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000066.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000067.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000068.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000069.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000070.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000071.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000072.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000073.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000074.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000075.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000076.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000077.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000078.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000079.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000080.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000081.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000082.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000083.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000084.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000085.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000086.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000087.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000088.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000089.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000090.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000091.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000092.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000093.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000094.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000095.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000096.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000097.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000098.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000099.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    },
+    {
+      "filename": "000100.jpg",
+      "PSNR": null,
+      "SSIM": null,
+      "MAE": null,
+      "LPIPS": null
+    }
+  ],
+  "checkpoint": "/root/autodl-fs/results/bpfr_net_train_0413_1136/checkpoints/best_stage2.pt",
+  "config": "/root/defocus/config/default.yaml"
+}

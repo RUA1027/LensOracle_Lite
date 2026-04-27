@@ -1,0 +1,12 @@
+torch
+torchvision
+numpy
+pyyaml
+pillow
+tqdm
+matplotlib
+tensorboard
+lpips
+thop
+tabulate
+pytest

@@ -1,0 +1,10 @@
+base_config: "../default.yaml"
+
+ablation:
+  variant: "zero_padding_encoder"
+  train_prior_mode: "correct_gt"
+  eval_prior_mode: "correct_gt"
+  lens_encoder_enabled: true
+  lens_encoder_padding: "zero"
+  incorrect_prior_policy: "same_split"
+

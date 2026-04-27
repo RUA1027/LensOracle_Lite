@@ -1,0 +1,16 @@
+data/
+*.pth
+__pycache__/
+.pytest_cache/
+.claude/
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+split_manifest.json
+tests/.tmp*/
+*.png
+*.log
+*.pytorch
+*.sh
+*.png
+*.jpg
+*.jpeg

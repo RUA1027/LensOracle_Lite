@@ -1,0 +1,10 @@
+base_config: "../default.yaml"
+
+ablation:
+  variant: "restoration_only"
+  train_prior_mode: "none"
+  eval_prior_mode: "none"
+  lens_encoder_enabled: false
+  lens_encoder_padding: "circular"
+  incorrect_prior_policy: "same_split"
+
