@@ -252,7 +252,7 @@ visualization:
     # 训练按 epoch 导出可视化的总开关；测试也可继承此默认值。
     enabled: true
     # 每隔多少个 epoch 导出一次训练可视化。
-    interval: 10
+    interval: 5
     # lens-table 可视化时展示的通道索引。
     prior_channels: [0, 10, 20, 30, 40, 50, 60]
     # 是否导出 cross-attention 权重图。

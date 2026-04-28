@@ -35,6 +35,9 @@ from utils.visualize import (
     plot_lens_table_comparison,
     plot_restoration_with_zoom,
     plot_sfr_curves,
+    plot_center_edge_comparison,
+    plot_residual_heatmap,
+    save_full_frame,
 )
 
 
@@ -311,8 +314,8 @@ def main() -> None:
     visual_enabled = bool(args.export_visuals or (visual_cfg is not None and getattr(visual_cfg, "enabled", False)))
     channels = list(getattr(visual_cfg, "prior_channels", [0, 10, 20, 30, 40, 50, 60])) if visual_cfg else [0, 10, 20]
     visual_root = Path(output_dir) / "visualizations"
-    if visual_enabled:
-        visual_root.mkdir(parents=True, exist_ok=True)
+    # 强制创建 visualizations 目录，因为即使其它可视化被拦截，也要输出3种独立诊断图
+    visual_root.mkdir(parents=True, exist_ok=True)
 
     print("=" * 60)
     print("BPFR-Net lens-table fusion testing")
@@ -363,6 +366,18 @@ def main() -> None:
                     save_comparison_image(blur[index].cpu(), sharp[index].cpu(), restored[index].cpu(), str(Path(output_dir) / "comparisons" / filename))
                 if args.save_restored:
                     save_single_result(restored[index].cpu(), str(Path(output_dir) / "restored" / filename))
+                
+                # 强制输出 3 种独立诊断图 (无视 visual_limit 拦截)
+                diag_dir = visual_root / f"{index:03d}_{Path(filename).stem}"
+                
+                # 全画幅复原图
+                save_full_frame(restored[index].cpu(), str(diag_dir / "restored_full.png"))
+                
+                # 中心与边缘对比、残差热力图 (需要存在 GT 才能比对残差)
+                if sharp is not None:
+                    plot_center_edge_comparison(blur[index].cpu(), restored[index].cpu(), sharp[index].cpu(), str(diag_dir / "center_edge_comparison.png"), mode="test")
+                    plot_residual_heatmap(sharp[index].cpu(), restored[index].cpu(), str(diag_dir / "residual_heatmap.png"))
+
                 if visual_enabled and visual_count < max(0, int(args.visual_limit)):
                     single_crop = crop_info[index : index + 1] if torch.is_tensor(crop_info) else None
                     _export_visuals(

@@ -1,4 +1,8 @@
-"""Evaluate multiple Stage3 ablation variants on the same test sample order."""
+"""Evaluate multiple Stage3 ablation variants on the same test sample order.
+
+This script is metrics-only. Diagnostic visualizations are exported by
+``train.py`` and ``test.py`` for the currently running experiment/checkpoint.
+"""
 
 from __future__ import annotations
 
@@ -23,15 +27,6 @@ from config import load_config
 from test import _load_checkpoint, _resolve_filename, _resolve_prior_table, _sanitize_for_json
 from utils.metrics import PerformanceEvaluator
 from utils.model_builder import build_models_from_config, build_test_dataloader_by_type, get_supported_dataset_types
-from utils.visualize import (
-    plot_ablation_error_maps,
-    plot_ablation_recovery_comparison,
-    plot_center_edge_ablation_crops,
-    plot_incorrect_prior_injection,
-)
-
-
-DEFAULT_ORDER = ["correctprior", "restoration_only", "incorrectprior_eval", "zero_padding_encoder"]
 
 
 def _load_suite(path: str) -> Dict[str, Any]:
@@ -49,7 +44,8 @@ def _load_suite(path: str) -> Dict[str, Any]:
 def _variant_entries(suite: Dict[str, Any]) -> List[Dict[str, str]]:
     entries: List[Dict[str, str]] = []
     base_dir = Path(str(suite.get("_base_dir") or "."))
-    for raw in suite.get("variants") or suite.get("models"):
+    variants_list = suite.get("variants") or suite.get("models") or []
+    for raw in variants_list:
         if not isinstance(raw, dict):
             raise ValueError("Each variant entry must be a mapping.")
         config_path = raw.get("config")
@@ -124,8 +120,6 @@ def _run_variant(
     dataset_type: str,
     data_root: str | None,
     expected_filenames: List[str] | None,
-    visual_records: Dict[str, Dict[str, Any]],
-    visual_limit: int,
 ) -> tuple[List[Dict[str, Any]], List[str]]:
     config = load_config(entry["config"])
     prior_mode = str(getattr(config.ablation, "eval_prior_mode", "correct_gt"))
@@ -139,7 +133,7 @@ def _run_variant(
     loader, _ = build_test_dataloader_by_type(
         dataset_type,
         config=config,
-        data_root_override=data_root,
+        data_root_override=data_root if data_root is not None else "",
         require_psf_sfr=prior_mode in {"correct_gt", "incorrect_gt"},
         require_incorrect_psf_sfr=prior_mode == "incorrect_gt",
     )
@@ -183,64 +177,25 @@ def _run_variant(
                         "injected_lens": injected_lens,
                     }
                 )
-                if len(visual_records) < visual_limit or filename in visual_records:
-                    record = visual_records.setdefault(
-                        filename,
-                        {
-                            "blur": blur[index].detach().cpu(),
-                            "sharp": None if sharp is None else sharp[index].detach().cpu(),
-                            "variants": {},
-                            "true_lens": true_lens,
-                            "injected_lens": injected_lens,
-                        },
-                    )
-                    record["variants"][entry["name"]] = restored[index].detach().cpu()
-                    if injected_lens:
-                        record["injected_lens"] = injected_lens
     return rows, filenames
 
 
-def _export_visuals(output_dir: Path, visual_records: Dict[str, Dict[str, Any]]) -> None:
-    visual_dir = output_dir / "visualizations"
-    for idx, (filename, record) in enumerate(visual_records.items()):
-        stem = Path(filename).stem
-        sample_dir = visual_dir / f"{idx:03d}_{stem}"
-        variants = record["variants"]
-        order = [name for name in DEFAULT_ORDER if name in variants]
-        plot_ablation_recovery_comparison(record["blur"], variants, record["sharp"], str(sample_dir / "full_comparison.png"), order=order)
-        plot_center_edge_ablation_crops(record["blur"], variants, record["sharp"], str(sample_dir / "center_edge.png"), order=order)
-        if record["sharp"] is not None:
-            plot_ablation_error_maps(variants, record["sharp"], str(sample_dir / "error_maps.png"), order=order)
-        if "correctprior" in variants and "incorrectprior_eval" in variants:
-            plot_incorrect_prior_injection(
-                variants["correctprior"],
-                variants["incorrectprior_eval"],
-                record["sharp"],
-                str(sample_dir / "incorrect_prior_injection.png"),
-                true_lens=str(record.get("true_lens", "")),
-                injected_lens=str(record.get("injected_lens", "")),
-            )
-
-
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Evaluate a Stage3 ablation suite.")
+    parser = argparse.ArgumentParser(description="Evaluate a Stage3 ablation suite and write metrics only.")
     parser.add_argument("--suite", required=True, help="YAML file listing config/checkpoint pairs.")
     parser.add_argument("--dataset-type", default=None, choices=get_supported_dataset_types())
     parser.add_argument("--data-root", default=None)
     parser.add_argument("--output", default=None)
-    parser.add_argument("--visual-limit", type=int, default=None)
     args = parser.parse_args()
 
     suite = _load_suite(args.suite)
     entries = _variant_entries(suite)
     dataset_type = str(args.dataset_type or suite.get("dataset_type") or "omnilens_mixlib")
     data_root = args.data_root if args.data_root is not None else suite.get("data_root")
-    visual_limit = int(args.visual_limit if args.visual_limit is not None else suite.get("visual_limit", 8))
     output_dir = _build_output_dir(suite, args.output)
 
     all_rows: List[Dict[str, Any]] = []
     expected_filenames: List[str] | None = None
-    visual_records: Dict[str, Dict[str, Any]] = {}
     for entry in entries:
         rows, filenames = _run_variant(
             entry,
@@ -248,8 +203,6 @@ def main() -> None:
             dataset_type,
             None if data_root is None else str(data_root),
             expected_filenames,
-            visual_records,
-            max(0, visual_limit),
         )
         if expected_filenames is None:
             expected_filenames = filenames
@@ -265,8 +218,6 @@ def main() -> None:
         "per_image_results": all_rows,
     }
     _write_outputs(output_dir, all_rows, summary)
-    if visual_limit > 0:
-        _export_visuals(output_dir, visual_records)
     print(f"Ablation suite results saved to: {output_dir}")
 
 

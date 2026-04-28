@@ -5,16 +5,22 @@
 2) attention 权重热力图；
 3) ODN 重建对比图；
 4) 训练阶段关键指标仪表盘；
-5) restoration 结果局部放大图。
+5) restoration 结果局部放大图；
+6) 中心+边缘视场复原对比图；
+7) 残差热力图；
+8) 全画幅复原图保存。
 
 所有函数均以“可离线保存 PNG”为目标，采用无界面后端 Agg。
 """
 
 from __future__ import annotations
 
+import random
 from pathlib import Path
-from typing import Iterable, Mapping, Sequence
+from typing import Iterable, Sequence
 
+import numpy as np
+from PIL import Image
 import torch
 
 
@@ -275,140 +281,115 @@ def plot_restoration_with_zoom(
     plt.close(fig)
 
 
-def _ordered_variant_items(
-    restored_by_variant: Mapping[str, torch.Tensor],
-    order: Sequence[str] | None = None,
-) -> list[tuple[str, torch.Tensor]]:
-    keys = list(order) if order is not None else list(restored_by_variant.keys())
-    return [(key, restored_by_variant[key]) for key in keys if key in restored_by_variant]
-
-
-def plot_ablation_recovery_comparison(
+def plot_center_edge_comparison(
     blur: torch.Tensor,
-    restored_by_variant: Mapping[str, torch.Tensor],
-    sharp_gt: torch.Tensor | None,
-    filename: str,
-    order: Sequence[str] | None = None,
+    restored: torch.Tensor,
+    gt: torch.Tensor,
+    filename: str | Path,
+    mode: str = "test",
+    crop_size: int = 256,
 ) -> None:
-    """Plot full-size Blur / variants / GT comparison for ablation reports."""
+    """绘制中心与边缘视场的复原对比图。
 
+根据 mode 设定不同的绘图行数：
+如果 mode == 'test'，分别展示 [中心, 左上, 右上, 左下, 右下] 5行的 Blur / Restored / GT 图像块；
+如果 mode == 'train'，则分别展示 [中心, 某一随机角点] 2行的 Blur / Restored / GT 图像块。
+    """
     plt = _load_pyplot()
-    panels: list[tuple[str, torch.Tensor]] = [("Blur", blur)]
-    panels.extend(_ordered_variant_items(restored_by_variant, order))
-    if sharp_gt is not None:
-        panels.append(("GT", sharp_gt))
-
-    fig, axes = plt.subplots(1, len(panels), figsize=(4.0 * len(panels), 4.2), squeeze=False)
-    for ax, (title, tensor) in zip(axes[0], panels):
-        ax.imshow(_to_numpy_image(tensor))
-        ax.set_title(title)
-        ax.axis("off")
-    fig.tight_layout()
-    _ensure_parent(filename)
-    fig.savefig(filename, dpi=150)
-    plt.close(fig)
-
-
-def _crop_center_and_edge(tensor: torch.Tensor, crop_size: int | None = None) -> tuple[torch.Tensor, torch.Tensor]:
-    h, w = tensor.shape[-2:]
-    size = int(crop_size or max(1, min(h, w) // 4))
-    size = max(1, min(size, h, w))
-    center_top = max(0, (h - size) // 2)
-    center_left = max(0, (w - size) // 2)
-    center = tensor[..., center_top : center_top + size, center_left : center_left + size]
-    edge = tensor[..., 0:size, 0:size]
-    return center, edge
-
-
-def plot_center_edge_ablation_crops(
-    blur: torch.Tensor,
-    restored_by_variant: Mapping[str, torch.Tensor],
-    sharp_gt: torch.Tensor | None,
-    filename: str,
-    order: Sequence[str] | None = None,
-    crop_size: int | None = None,
-) -> None:
-    """Plot same-size center and edge crops for each ablation output."""
-
-    plt = _load_pyplot()
-    panels: list[tuple[str, torch.Tensor]] = [("Blur", blur)]
-    panels.extend(_ordered_variant_items(restored_by_variant, order))
-    if sharp_gt is not None:
-        panels.append(("GT", sharp_gt))
-
-    fig, axes = plt.subplots(2, len(panels), figsize=(3.4 * len(panels), 6.4), squeeze=False)
-    for col, (title, tensor) in enumerate(panels):
-        center, edge = _crop_center_and_edge(tensor, crop_size=crop_size)
-        axes[0, col].imshow(_to_numpy_image(center))
-        axes[0, col].set_title(f"{title} center")
-        axes[0, col].axis("off")
-        axes[1, col].imshow(_to_numpy_image(edge))
-        axes[1, col].set_title(f"{title} edge")
-        axes[1, col].axis("off")
-    fig.tight_layout()
-    _ensure_parent(filename)
-    fig.savefig(filename, dpi=150)
-    plt.close(fig)
-
-
-def plot_ablation_error_maps(
-    restored_by_variant: Mapping[str, torch.Tensor],
-    sharp_gt: torch.Tensor,
-    filename: str,
-    order: Sequence[str] | None = None,
-) -> None:
-    """Plot mean absolute error maps with one shared color scale."""
-
-    plt = _load_pyplot()
-    items = _ordered_variant_items(restored_by_variant, order)
-    errors = []
-    for title, tensor in items:
-        error = (tensor.detach().float().cpu() - sharp_gt.detach().float().cpu()).abs()
-        if error.ndim == 4:
-            error = error[0]
-        if error.ndim == 3:
-            error = error.mean(dim=0)
-        errors.append((title, error))
-    vmax = max([float(err.max()) for _, err in errors] + [1.0e-6])
-
-    fig, axes = plt.subplots(1, len(errors), figsize=(4.0 * len(errors), 4.0), squeeze=False)
-    last_im = None
-    for ax, (title, error) in zip(axes[0], errors):
-        last_im = ax.imshow(error.numpy(), cmap="inferno", vmin=0.0, vmax=vmax)
-        ax.set_title(title)
-        ax.axis("off")
-    if last_im is not None:
-        fig.colorbar(last_im, ax=list(axes[0]), fraction=0.046, pad=0.04)
-    fig.tight_layout()
-    _ensure_parent(filename)
-    fig.savefig(filename, dpi=150)
-    plt.close(fig)
-
-
-def plot_incorrect_prior_injection(
-    correct_restored: torch.Tensor,
-    incorrect_restored: torch.Tensor,
-    sharp_gt: torch.Tensor | None,
-    filename: str,
-    true_lens: str,
-    injected_lens: str,
-) -> None:
-    """Plot CorrectPrior vs IncorrectPrior and label the true/injected lenses."""
-
-    plt = _load_pyplot()
-    panels: list[tuple[str, torch.Tensor]] = [
-        ("CorrectPrior", correct_restored),
-        (f"IncorrectPrior\ntrue={true_lens}\ninjected={injected_lens}", incorrect_restored),
+    
+    h, w = blur.shape[-2:]
+    c_size = min(crop_size, h, w)
+    
+    # 定义 5 个裁剪位置 (Top, Left, Label)
+    crops_info = [
+        ("Center", max(0, (h - c_size) // 2), max(0, (w - c_size) // 2)),
+        ("Top-Left", 0, 0),
+        ("Top-Right", 0, w - c_size),
+        ("Bottom-Left", h - c_size, 0),
+        ("Bottom-Right", h - c_size, w - c_size)
     ]
-    if sharp_gt is not None:
-        panels.append(("GT", sharp_gt))
+    
+    if mode == "train":
+        chosen_corner = random.choice(crops_info[1:])
+        selected_crops = [crops_info[0], chosen_corner]
+    else:
+        selected_crops = crops_info
 
-    fig, axes = plt.subplots(1, len(panels), figsize=(4.2 * len(panels), 4.6), squeeze=False)
-    for ax, (title, tensor) in zip(axes[0], panels):
-        ax.imshow(_to_numpy_image(tensor))
-        ax.set_title(title)
-        ax.axis("off")
+    n_rows = len(selected_crops)
+    n_cols = 3  # Blur, Restored, GT
+    
+    fig, axes = plt.subplots(n_rows, n_cols, figsize=(4 * n_cols, 4 * n_rows), squeeze=False)
+    
+    tensors = [("Blur", blur), ("Restored", restored), ("GT", gt)]
+    
+    for row, (label, top, left) in enumerate(selected_crops):
+        for col, (title, tensor) in enumerate(tensors):
+            crop = tensor[..., top : top + c_size, left : left + c_size]
+            ax = axes[row, col]
+            ax.imshow(_to_numpy_image(crop))
+            ax.set_title(f"{label} - {title}")
+            ax.axis("off")
+            
     fig.tight_layout()
     _ensure_parent(filename)
     fig.savefig(filename, dpi=150)
     plt.close(fig)
+
+
+def plot_residual_heatmap(
+    gt: torch.Tensor, 
+    restored: torch.Tensor, 
+    filename: str | Path
+) -> None:
+    """绘制真实图与复原结果之间的残差热力图，用于观测伪影与恢复遗漏结构。"""
+    plt = _load_pyplot()
+    
+    # 绝对残差并进行通道均值池化，转换为 2D 差异图
+    residual = torch.abs(gt.detach().float().cpu() - restored.detach().float().cpu())
+    if residual.ndim == 4:
+        residual = residual[0]
+    
+    # [C, H, W] -> [H, W]
+    if residual.ndim == 3:
+        residual = residual.mean(dim=0)
+        
+    residual = residual.numpy()
+
+    fig, ax = plt.subplots(1, 1, figsize=(8, 8))
+    # 为防止个别噪点影响，基于 percentile 截断极值
+    vmax = float(np.percentile(residual, 99.5)) if np.any(residual) else 1.0
+    
+    im = ax.imshow(residual, cmap="magma", vmin=0, vmax=vmax, aspect="auto")
+    ax.set_title("GT vs Restored Residual")
+    ax.axis("off")
+    fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
+
+    fig.tight_layout()
+    _ensure_parent(filename)
+    fig.savefig(filename, dpi=150)
+    plt.close(fig)
+
+
+def save_full_frame(
+    restored: torch.Tensor, 
+    filename: str | Path
+) -> None:
+    """将全画幅复原图以一比一原尺寸直接保存到本地无白连白边图像，弃用 mpl 渲染。"""
+    _ensure_parent(filename)
+    
+    img_np = _to_numpy_image(restored)
+    # _to_numpy_image 得到的 shape 为 [H, W, C] (或单通道 [H, W]) 值域 [0, 1]
+    
+    img_np = (img_np * 255.0).round().clip(0, 255).astype(np.uint8)
+    
+    if img_np.ndim == 2:
+        img_pil = Image.fromarray(img_np, mode="L")
+    else:
+        # 当通道数为单通道时，被保留为 [H, W, 1]，需要转回 L 模式或去除最后一维
+        if img_np.shape[-1] == 1:
+            img_pil = Image.fromarray(img_np[..., 0], mode="L")
+        else:
+            img_pil = Image.fromarray(img_np, mode="RGB")
+            
+    img_pil.save(filename)
+
